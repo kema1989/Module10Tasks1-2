@@ -17,7 +17,7 @@ namespace Module10Tasks1_2
     {
         public int GetSum(int a, int b)
         {
-            throw new NotImplementedException();
+            
         }
     }
     class Program
