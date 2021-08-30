@@ -13,13 +13,6 @@ namespace Module10Tasks1_2
             return a + b;
         }
     }
-    struct CalculateSum : ISum
-    {
-        public int GetSum(int a, int b)
-        {
-            
-        }
-    }
     class Program
     {
         static void Main(string[] args)
