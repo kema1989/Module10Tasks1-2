@@ -4,7 +4,7 @@ namespace Module10Task2
 {
     public interface ICalculator
     {
-        void GetSum(int a, int b);
+        void GetSum(ILogger logger);
     }
     public interface ILogger
     {
@@ -27,40 +27,51 @@ namespace Module10Task2
             Console.ResetColor();
         }
     }
-    class Sum : ICalculator
+    class Calculator : ICalculator
     {
-        ILogger Logger { get; }
-        public Sum(ILogger logger)
+        public Calculator()
         {
 
         }
-        public void GetSum(int a, int b)
+        public void GetSum(ILogger logger)
         {
             Console.WriteLine("Введите первое слагаемое:");
-            a = Convert.ToInt32(Console.ReadLine());
+            int a = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Введите второе слагаемое:");
-            b = Convert.ToInt32(Console.ReadLine());
+            int b = Convert.ToInt32(Console.ReadLine());
 
-            Logger.Event("Сумматор начинает свою суперсложную работу...");
-            
+            logger.Event("Сумматор начинает свою суперсложную работу. Подождите 5 секунд...");
+            System.Threading.Thread.Sleep(5000);
+            logger.Event("Сумматор окончил свою работу. Вот результат:");
+            Console.WriteLine($"{a} + {b} = {a + b}");
+            Console.WriteLine("Чтобы сложить еще пару чисел, введите \"1\", для выхода нажмите любую клавишу.");
+            if (Console.ReadLine() == "1")
+                GetSum(logger);
+            else
+            {
+                Console.WriteLine("До свидания, пользуйтесь этим тормознутым сумматором еще)");
+                return;
+            }
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
+            ILogger logger = new Logger();
             try
             {
                 Calculator calculator = new Calculator();
-                Console.WriteLine("Введите первое слагаемое");
-                int a = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("Введите второе слагаемое");
-                int b = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine($"{a} + {b} = " + calculator.GetSum(a, b));
+                calculator.GetSum(logger);
             }
             catch (FormatException)
             {
-                Console.WriteLine("Введено значение неверного формата...");
+                logger.Error("Введено значение неверного формата...");
+                Program.Main(args);
+            }
+            catch (OverflowException)
+            {
+                logger.Error("Введено слишком маленькое/слишком большое число...");
                 Program.Main(args);
             }
             catch (Exception)
