@@ -82,7 +82,7 @@ namespace Module10Task2
             Console.WriteLine("Введите множитель:");
             double b = Convert.ToDouble(Console.ReadLine());
             logger.Event("Калькулятор начинает свою суперсложную работу. Подождите 6 секунд...");
-            System.Threading.Thread.Sleep(5000);
+            System.Threading.Thread.Sleep(6000);
             double c = Math.Round(a * b, 3);
             logger.Event("Калькулятор окончил свою работу. Вот результат:");
             Console.WriteLine($"{a} * {b} = {c}");
@@ -94,7 +94,7 @@ namespace Module10Task2
             if(b == 0.0)
                 throw new DivideByZeroException();
             logger.Event("Калькулятор начинает свою суперсложную работу. Подождите 6 секунд...");
-            System.Threading.Thread.Sleep(5000);
+            System.Threading.Thread.Sleep(6000);
             double c = Math.Round(a / b, 3);
             logger.Event("Калькулятор окончил свою работу. Вот результат:");
             Console.WriteLine($"{a} / {b} = {c}");
@@ -106,7 +106,7 @@ namespace Module10Task2
             Console.WriteLine("Введите показатель степени:");
             double b = Convert.ToDouble(Console.ReadLine());
             logger.Event("Калькулятор начинает свою суперсложную работу. Подождите 7 секунд...");
-            System.Threading.Thread.Sleep(5000);
+            System.Threading.Thread.Sleep(7000);
             double c = Math.Round(Math.Pow(a, b), 3);
             logger.Event("Калькулятор окончил свою работу. Вот результат:");
             Console.WriteLine($"{a} ^ {b} = {c}");
