@@ -117,6 +117,7 @@ namespace Module10Task2
         static void Main(string[] args)
         {
             ILogger logger = new Logger();
+            //Calculator calculator = new Calculator(); !!!!!!! Если так сделать !!!!!!!
             try
             {
                 Calculator calculator = new Calculator();
@@ -126,11 +127,12 @@ namespace Module10Task2
             {
                 logger.Error("Введено значение неверного формата...");
                 Program.Main(args);
+                //calculator.GetResult(logger); !!!!!!!!!! И так, то почему-то исключения перестают работать(
             }
             catch (OverflowException)
             {
                 logger.Error("Введено слишком маленькое/слишком большое число...");
-                Program.Main(args);
+                Program.Main(args); // Как по-другому возвращаться после исключения к введению числа???
             }
             catch (DivideByZeroException)
             {
