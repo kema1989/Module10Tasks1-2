@@ -4,7 +4,7 @@ namespace Module10Task2
 {
     public interface ICalculator
     {
-        void GetSum(ILogger logger);
+        void GetResult(ILogger logger);
     }
     public interface ILogger
     {
@@ -29,30 +29,88 @@ namespace Module10Task2
     }
     class Calculator : ICalculator
     {
-        public Calculator()
+        public void GetResult(ILogger logger)
         {
-
-        }
-        public void GetSum(ILogger logger)
-        {
-            Console.WriteLine("Введите первое слагаемое:");
-            int a = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Введите второе слагаемое:");
-            int b = Convert.ToInt32(Console.ReadLine());
-
-            logger.Event("Сумматор начинает свою суперсложную работу. Подождите 5 секунд...");
-            System.Threading.Thread.Sleep(5000);
-            logger.Event("Сумматор окончил свою работу. Вот результат:");
-            Console.WriteLine($"{a} + {b} = {a + b}");
-            Console.WriteLine("Чтобы сложить еще пару чисел, введите \"1\", для выхода нажмите любую клавишу.");
-            if (Console.ReadLine() == "1")
-                GetSum(logger);
-            else
+            Console.WriteLine("Введите число:");
+            double a = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine($"Выберите операцию (введите нужное число):\nсложение - 1, вычитание - 2, умножение - 3,\nделение - 4, возведение в степень - 5, выход - любая другая клавиша");
+            switch (Console.ReadLine())
             {
-                Console.WriteLine("До свидания, пользуйтесь этим тормознутым сумматором еще)");
-                return;
+                case "1":
+                    Addition(logger, a);
+                    break;
+                case "2":
+                    Subtraction(logger, a);
+                    break;
+                case "3":
+                    Multiplication(logger, a);
+                    break;
+                case "4":
+                    Division(logger, a);
+                    break;
+                case "5":
+                    Exponentiation(logger, a);
+                    break;
+                default:
+                    return;
             }
+
         }
+        public void Addition(ILogger logger, double a)
+        {
+            Console.WriteLine("Введите слагаемое:");
+            double b = Convert.ToDouble(Console.ReadLine());
+            logger.Event("Калькулятор начинает свою суперсложную работу. Подождите 5 секунд...");
+            System.Threading.Thread.Sleep(5000);
+            double c = Math.Round(a + b, 3);
+            logger.Event("Сумматор окончил свою работу. Вот результат:");
+            Console.WriteLine($"{a} + {b} = {c}");
+        }
+        public void Subtraction(ILogger logger, double a)
+        {
+            Console.WriteLine("Введите вычитаемое:");
+            double b = Convert.ToDouble(Console.ReadLine());
+            logger.Event("Калькулятор начинает свою суперсложную работу. Подождите 5 секунд...");
+            System.Threading.Thread.Sleep(5000);
+            double c = Math.Round(a - b, 3);
+            logger.Event("Калькулятор окончил свою работу. Вот результат:");
+            Console.WriteLine($"{a} - {b} = {c}");
+        }
+        public void Multiplication(ILogger logger, double a)
+        {
+            Console.WriteLine("Введите множитель:");
+            double b = Convert.ToDouble(Console.ReadLine());
+            logger.Event("Калькулятор начинает свою суперсложную работу. Подождите 6 секунд...");
+            System.Threading.Thread.Sleep(5000);
+            double c = Math.Round(a * b, 3);
+            logger.Event("Калькулятор окончил свою работу. Вот результат:");
+            Console.WriteLine($"{a} * {b} = {c}");
+        }
+        public void Division(ILogger logger, double a)
+        {
+            Console.WriteLine("Введите делитель:");
+            double b = Convert.ToDouble(Console.ReadLine());
+            if(b == 0.0)
+                throw new DivideByZeroException();
+            logger.Event("Калькулятор начинает свою суперсложную работу. Подождите 6 секунд...");
+            System.Threading.Thread.Sleep(5000);
+            double c = Math.Round(a / b, 3);
+            logger.Event("Калькулятор окончил свою работу. Вот результат:");
+            Console.WriteLine($"{a} / {b} = {c}");
+        }
+        public void Exponentiation(ILogger logger, double a)
+        {
+            if (!(a > 0.0))
+                throw new Exception("Возводить в степень можно только положительные числа...");
+            Console.WriteLine("Введите показатель степени:");
+            double b = Convert.ToDouble(Console.ReadLine());
+            logger.Event("Калькулятор начинает свою суперсложную работу. Подождите 7 секунд...");
+            System.Threading.Thread.Sleep(5000);
+            double c = Math.Round(Math.Pow(a, b), 3);
+            logger.Event("Калькулятор окончил свою работу. Вот результат:");
+            Console.WriteLine($"{a} ^ {b} = {c}");
+        }
+
     }
     class Program
     {
@@ -62,7 +120,7 @@ namespace Module10Task2
             try
             {
                 Calculator calculator = new Calculator();
-                calculator.GetSum(logger);
+                calculator.GetResult(logger);
             }
             catch (FormatException)
             {
@@ -74,9 +132,15 @@ namespace Module10Task2
                 logger.Error("Введено слишком маленькое/слишком большое число...");
                 Program.Main(args);
             }
-            catch (Exception)
+            catch (DivideByZeroException)
             {
-                Console.WriteLine("Произошла непредвиденная ошибка...");
+                logger.Error("На 0 делить нельзя...");
+                Program.Main(args);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+                Program.Main(args);
             }
 
         }
