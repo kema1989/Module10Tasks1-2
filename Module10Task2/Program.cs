@@ -56,6 +56,7 @@ namespace Module10Task2
             }
 
         }
+        #region Арифметические операции
         public void Addition(ILogger logger, double a)
         {
             Console.WriteLine("Введите слагаемое:");
@@ -110,6 +111,7 @@ namespace Module10Task2
             logger.Event("Калькулятор окончил свою работу. Вот результат:");
             Console.WriteLine($"{a} ^ {b} = {c}");
         }
+        #endregion
 
     }
     class Program
